@@ -4,13 +4,29 @@ namespace SkalProj_Datastrukturer_Minne
 {
     class Program
     {
+        //Svar
+        /*
+         1. Stacken och heapen utgör minneshanteringen i C#. Stacken kan man jämföra med t.ex. en hög med tallrikar, den nyaste läggs högst upp i högen och det är även den högst upp i högen som kommer att plockas bort först.
+            Varje "tallrik" tar upp plats i minnet.
+            Heapen föreställer jag mig som en anslagstavla där man kan fästa upp lappar med nålar. Anslagstavlan är överskådlig och lappar kan nålas fast och plockas bort efter behov. 
+            På stacken lagras t.ex. int, double, bool och referenser till objekt, dessa lagras bara en kort tid när metoden körs.
+            På heapen lagras det vi vill spara lite längre tid t.ex.objekt, klasser, interface, strings. Dessa ligger kvar tills Garbage collectorn städar bort allt som inte refereras till längre.
+         
+         2. Value types är datatyper som lagrar sitt eget värde direkt på stacken, de tar upp liten plats.
+            Reference types är datatyper som har en pekare som ligger på stacken och pekar mot det lagrade utrymmet i heapen. En referenstyp kan ha flera "pekare" samtidigt. Finns det inga pekare kommer referenstypen
+            att städas bort av garbage collectorn.
+
+        3.  Det första exemplet returnerar 3 eftersom int:en är sparad som värdetyp. X och Y är två självständiga värdetyper som inte påverkas av varandra om den ena ändras.
+            Det andra exemplet returnerar 4 eftersom int-värdena är sparade på samma plats på heapen. x och y är två olika "pekare" som pekar mot samma plats i minnet. så ändras y kommer också x att ändras.
+            x och y refererar till samma plats i minnet.
+         */
+
         /// <summary>
         /// The main method, vill handle the menues for the program
         /// </summary>
         /// <param name="args"></param>
         static void Main()
         {
-
             while (true)
             {
                 Console.WriteLine("Please navigate through the menu by inputting the number \n(1, 2, 3 ,4, 0) of your choice"
