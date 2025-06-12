@@ -26,7 +26,7 @@ public class Program
     /// <param name="args"></param>
     public static void Main()
     {
-        ConsoleUI.MainMenu();
+       ConsoleUI.MainMenu();
     }
 
     /// <summary>
@@ -68,7 +68,7 @@ public class Program
         List<string> theList = new();
         do
         {
-            Console.WriteLine(  "Skriv + följt av ordet du vill lägga till i listan. \n" +
+            Console.WriteLine("Skriv + följt av ordet du vill lägga till i listan. \n" +
                                 "Skriv - följt av ordet du vill ta bort en post från listan. \n" +
                                 "Skriv 1 för att se listan. \n" +
                                 "Skriv 0 för att avsluta.");
@@ -82,7 +82,7 @@ public class Program
                 nav = input[0];
                 value = input.Substring(1);
             }
-            catch (IndexOutOfRangeException) 
+            catch (IndexOutOfRangeException)
             {
                 Console.Clear();
                 Console.WriteLine("Please enter some input!");
@@ -111,7 +111,7 @@ public class Program
                     Environment.Exit(0);
                     break;
                 case '1':
-                    foreach(var element in theList) 
+                    foreach (var element in theList)
                     {
                         Console.WriteLine(element);
                     }
@@ -120,9 +120,9 @@ public class Program
                     Console.WriteLine("Du måste ange + eller - som första tecken");
                     continueLoop = true;
                     break;
-            } 
-                
-        }while(continueLoop);
+            }
+
+        } while (continueLoop);
     }
 
     /// <summary>
@@ -139,7 +139,7 @@ public class Program
         Queue<string> theQueue = new();
         do
         {
-            Console.WriteLine(  "** Välkommen till ICAs kösystem **\n" +
+            Console.WriteLine("** Välkommen till ICAs kösystem **\n" +
                                 "Skriv + följt med kundens namn för att ställa en kund i kön\n" +
                                 "Skriv - när en kund har blivit expedierad och lämnar kön\n" +
                                 "Skriv 1 för att se listan. \n" +
@@ -207,7 +207,7 @@ public class Program
         Stack<string> theStack = new();
         do
         {
-            Console.WriteLine(  "Skriv + följt av ordet du vill lägga till i listan \n" +
+            Console.WriteLine("Skriv + följt av ordet du vill lägga till i listan \n" +
                                 "Skriv - för att ta bort en post från listan. \n" +
                                 "Skriv 1 för att se listan. \n" +
                                 "Skriv 0 för att avsluta.");
@@ -263,85 +263,81 @@ public class Program
         Console.WriteLine("Ordet i omvänd ordning: " + reversedString);
     }
 
+    //    /*
+    //     * Use this method to check if the paranthesis in a string is Correct or incorrect.
+    //     * Example of correct: (()), {}, [({})],  List<int> list = new List<int>() { 1, 2, 3, 4 };
+    //     * Example of incorrect: (()]), [), {[()}],  List<int> list = new List<int>() { 1, 2, 3, 4 );
+    //     */
+
+    //Svar:
+    //1. Jag valde att använda en stack eftersom jag då kan kika på det översta elementet och se om den matchar med char:en vi tittar på i foreachen.
+    //   Jag hade föredragit att avända en Dictionary eftersom jag hade kunnat matcha ihop parantesterna istället för att skriva en lång if-sats
     public static void CheckParanthesis()
     {
-        /*
-         * Use this method to check if the paranthesis in a string is Correct or incorrect.
-         * Example of correct: (()), {}, [({})],  List<int> list = new List<int>() { 1, 2, 3, 4 };
-         * Example of incorrect: (()]), [), {[()}],  List<int> list = new List<int>() { 1, 2, 3, 4 );
-         */
-
-        //Först en koll att vi har fått en giltig input från användaren
-        string text = "";
-        while (string.IsNullOrWhiteSpace(text))
+        //Vi fortsätter fråga input från användaren i en evig loop (tills användaren stänger ner programmet)
+        bool continueInput = true;
+        bool isAMatch = false;
+        bool textContainsParanthesis = false;
+        do
         {
-            Console.WriteLine("Skriv in meningen vi ska kontrollera om paranteserna är rätt: ");
-            text = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(text))
+            Console.WriteLine("Skriv in en text för att se om den är välformad: ");
+            string userInput = Console.ReadLine();
+            if (string.IsNullOrEmpty(userInput))
             {
-                Console.WriteLine("Du måste skriva in något");
+                Console.WriteLine("Du måste skriva något. Försök igen");
             }
-        }
-
-        //isValid. Om listan är tom när vi ska kontrollera en slutparantes, eller om slutparantesen och startparantesen inte matchar kommer isValid flaggas som false och då vet vi att texten inte är välformad.
-        //containsParantheses. Vi vill kontrollera att texten som skrivs in faktiskt innehåller paranteser
-        bool isValid = true;
-        bool containsParantheses = false;
-        var openP = new Stack<char>();
-
-        //Vi kikar igenom alla char i användarens input-text. Om den aktuella char:en är en startparantes lägger vi till den i listan för startparanteser (openP).
-        foreach(char c in text)
-        {
-            if (c.Equals('(') || c.Equals('{') || c.Equals('['))
+            else
             {
-                openP.Push(c); 
-                containsParantheses = true;
+                Stack<char> startParanthesises = new();
+                foreach (char c in userInput)
+                {
+                    if (c.Equals('(') || c.Equals('{') || c.Equals('['))
+                    {
+                        textContainsParanthesis = true;
+                        startParanthesises.Push(c); //Om c är en öppningsparantes lägges den till i Stacken.
+                    }
+                    else if (c.Equals(')') || c.Equals('}') || c.Equals(']')) // Om c är en stängningsparantes kikar vi om vi har något i stacken. Har vi inte det är det ingen matchning.
+                    {
+                        textContainsParanthesis = true;
+                        if (startParanthesises.Count == 0)
+                        {
+                            isAMatch = false;
+                        }
+                        else
+                        {
+                            char start = startParanthesises.Pop();
+                            //Om öppningsparantesen och stängningsparantesen matchar är dessa två välmatchade och vi fortsätter loopen.
+                            if (start.Equals('(') && c.Equals(')') ||
+                                start.Equals('{') && c.Equals('}') ||
+                                start.Equals('[') && c.Equals(']'))
+                            {
+                                isAMatch = true;
+                            }
+                            else
+                            {
+                                isAMatch = false; //Om inte öppning och stängning matchar är inte strängen välformad och vi går ur loopen
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (textContainsParanthesis == false)
+                {
+                    Console.WriteLine("Texten innehåller inga paranteser. Försök igen");
+                }
+                else 
+                { 
+                    if (startParanthesises.Count == 0 && isAMatch)
+                    {
+                        Console.WriteLine("Texten är välformad");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Texten är inte välformad");
+                    }
+                }
             }
-
-            //Om char:en istället är en slutparantes kikar vi först på om vi har någon startparantes i openP. Har vi inte
-            //det är listan inte välformad och vi hoppar ur loopen och sätter isValid-flaggan till false.
-            //Om vi har något element i listan openP kikar vi på vad det är för ett tecken och tar sedan bort den.
-            //Om det elementet inte har någon matchning i IsMatching-metoden är listan inte välformad och vi hoppar ur
-            //loopen och sätter isValid-flaggan till false.
-
-            else if (c.Equals(')') || c.Equals('}') || c.Equals(']'))
-            {
-                containsParantheses = true;
-                if (openP.Count == 0)
-                {
-                    isValid = false;
-                    break;
-                }
-
-                char charOnTopOfStack = openP.Pop();
-
-                if (!IsMatching(c, charOnTopOfStack))
-                {
-                    isValid = false;
-                    break;
-                }
-            }   
-        }
-        if (!containsParantheses)
-        {
-            Console.WriteLine("Inga paranteser hittades i texten.");
-        }
-        else if(isValid && openP.Count == 0)
-        {
-            Console.WriteLine("Texten är välformad.");
-        }
-        else
-        {
-            Console.WriteLine("Texten är inte välformad, parantserna matchar inte.");
-        }
-    }
-    
-    public static bool IsMatching(char open, char close)
-    {
-        return (open == ')' && close == '(') ||
-               (open == ']' && close == '[') ||
-               (open == '}' && close == '{');
+        } while (continueInput);
     }
 }
 
